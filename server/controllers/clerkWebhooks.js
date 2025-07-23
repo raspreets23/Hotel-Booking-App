@@ -24,12 +24,18 @@ const clerkWebhooks = async (req, res) => {
       username: data.first_name + " " + data.last_name,
       email: data.email_addresses[0].email_address,
       image: data.image_url,
+      recentSearchedCities: [],
     };
 
     // Different events handling - Switch cases
     switch (type) {
       case "user.created": {
-        await User.create(userData);
+        try {
+          await User.create(userData);
+          console.log("User created in MongoDB");
+        } catch (err) {
+          console.log("Error creating user in MongoDB:", err);
+        }
         break;
       }
 
